@@ -1,0 +1,342 @@
+
+// 1.ZADATAK
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+int main()
+{
+    int m,n; //m-broj redaka, n-broj stupaca
+    
+    
+    
+    do{
+        printf("Unesi broj redaka:\n");
+        scanf("%d",&m);
+    }while(m < 10 || m >= 51);
+    
+    do{
+        printf("Unesi broj stupaca:\n");
+        scanf("%d",&n);
+    }while(n < 15 || n > 30);
+    
+    
+    //zauzimanje memorije za matricu
+    float **matrica = (float**)malloc(sizeof(float*)*m);
+    if(matrica == NULL) exit(99);
+    for(int i = 0; i < m; i++){
+        matrica[i] = (float*)malloc(sizeof(float)*n);
+        if(matrica[i] == NULL) exit(404);
+    }
+    
+    srand((unsigned)time(NULL));
+    
+    float ar_sred = 0;
+    float min;
+    for(int i = 0; i < m; i++){
+        min += pow(matrica[0][i],2);
+    }
+    min /= n;
+    int min_index = 0;
+    
+    //ispunjavanje matrice slucajnim brojevima
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            do{
+                matrica[i][j] = -1000 + (float)rand()/RAND_MAX*(2000+1);
+            }while(matrica[i][j] >= -100 && matrica[i][j] <= 100);
+        }
+    }
+    
+    
+    
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            ar_sred += pow(matrica[i][j],2);
+        }
+        ar_sred /= n;
+        if(ar_sred < min){
+            min = ar_sred;
+            min_index = i;
+        }
+    }
+    
+    //ispis matrice
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            printf("%.2f  ",matrica[i][j]);
+        }
+        printf("\n");
+    }
+    
+    printf("\n\n\n\n");
+    
+    
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            matrica[i][j] = matrica[min_index][j];
+        }
+    }
+    
+    //ispis matrice
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            printf("%.2f  ",matrica[i][j]);
+        }
+        printf("\n");
+    }
+    
+    return 0;
+}
+
+
+--------------------------------------------------------------------------
+2. ZADATAK:
+
+
+#include <stdio.h>
+
+/*
+2.zad
+[7 bod.] Napisati funkciju koja računa i vraća zbroj aritmetičkih sredinu svih prvih znamenki
+brojeva iz intervala [γ, δ] ⊂ Z. Izdvojiti korak određivanja prve znamenke broja u posebnu
+funkciju. U svrhu testiranja u funkciji main() pozvati napisanu funkciju s −222 i 12109 kao
+argumentima te na ekran ispisati povratnu vrijednost.
+*/
+
+
+// 123415 / 10 = 12341
+// 12341 / 10 = 1234
+// 1234 / 10 = 123
+// 123 / 10 = 12
+// 12 / 10 = 1
+
+int first_digit(int num){
+    
+    while(num > 9){
+        num /= 10;
+    }
+    return num;
+}
+
+
+double ar_sred(int dg, int gg){
+    double sum = 0;
+    for(int i = dg; i <= gg; i++){
+        sum += first_digit(i);
+    }
+    sum /= (gg-dg) + 1;
+    return sum;
+}
+
+
+
+int main()
+{
+    
+    int dg,gg;
+    printf("unesi dg i gg:\n");
+    scanf("%d %d",&dg,&gg);
+    printf("%lf",ar_sred(dg,gg));
+
+    return 0;
+}
+
+--------------------------------------------------------------------------
+3. ZADATAK: 
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+//PISMENI ISPIT - 18.9.2019.
+
+/* TREĆI ZADATAK
+
+int digit_num(long int num){
+    int counter = 0;
+    while(num){
+        counter++;
+        num/=10;
+    }
+    return counter;
+}
+
+void funk_zad_3(long int* polje, int n){
+    int num_of_digits, up_limit, down_limit;
+    for(int i = 0; i < n; i++){
+        num_of_digits = digit_num(polje[i]);
+        up_limit = pow(10,num_of_digits);
+        down_limit = pow(10, num_of_digits - 1);
+        polje[i] = down_limit + rand() % (up_limit - down_limit + 1);
+    }
+}
+
+int main()
+{
+    srand((unsigned)time(NULL));
+    
+    int n;
+    printf("Unesi velicinu polja: \n");
+    scanf("%d", &n);
+    
+    long int* polje = (long int*)malloc(sizeof(long int) * n);
+    if(polje == NULL) exit(404);
+
+    for(int i = 0; i < n; i++){
+        scanf("%ld", &polje[i]);
+    }    
+    printf("[");
+    for(int i = 0; i < n; i++){
+        printf(" %ld", polje[i]);
+        if(i == n - 1) break;
+        printf(", ");
+    }
+    printf("]");
+    
+    funk_zad_3(polje, n);
+    
+    
+    printf("\n\n");
+    printf("[");
+    for(int i = 0; i < n; i++){
+        printf(" %ld", polje[i]);
+        if(i == n - 1) break;
+        printf(", ");
+    }
+    printf("]");
+    
+    free(polje);
+    
+    return 0;
+}
+
+*/
+
+
+
+
+---------------------------------------------------------------------------
+//4.ZADATAK
+/*
+int formula(int* polje, int n){
+    
+    int result = 0;
+    
+    for(int i = 0; i < n - 1; i++){
+        for(int j = i + 1; j < n; j++){
+            result += abs(polje[i] - polje[j]);
+        }
+    }
+    return result;
+}
+
+
+int main(){
+    
+    int polje[50];
+    
+    srand((unsigned)time(NULL));
+    
+    for(int i = 0; i < 50; i++){
+        polje[i] = 0 + rand() % (100 + 1);
+    }
+    
+    for(int i = 0; i < 50; i++){
+        printf(" %d", polje[i]);
+    }
+    
+    printf("\n\n%d", formula(polje, 50));
+    
+    return 0;
+}
+*/
+-------------------------------------------------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+/*
+5.zad
+Napisati funkciju koja mijenja predani joj string tako da zamijenjuje svaku pojavu
+znaka znamenke pseudo-slučajnim znakom znamenke različitim od nje. U svrhu testiranja u
+funkciji main() dinamički zauzeti memoriju za 80 podataka tipa char (u potpunosti rukovati
+memorijom). Omogućiti korisniku unos stringa (osigurati da se ne premaši veličina prethodno
+zauzetog polja). Iskoristiti navedeni string u pozivu napisane funkciju te potom na ekran
+ispisati izmijenjeni string. [Znakovi 0, 1, ... , 9 imaju ASCII vrijednosti 48, 49, . . . , 57]
+*/
+
+
+void change_string(char *s, int size){
+    int rand_num = 0;
+    for(int i = 0; i < strlen(s); i++){
+        if(s[i] >= 48 && s[i] <= 57){
+            do{
+                rand_num = 48 + rand() % (57-49 + 1);
+            }while(rand_num == s[i]);
+            s[i] = rand_num;
+        }
+    }
+    
+}
+
+
+int main()
+{
+    srand((unsigned)time(NULL));
+
+    char *sentence = (char*)malloc(81*sizeof(char));
+    if(sentence == NULL){
+        exit(102);
+    }
+    fgets(sentence, 81, stdin);
+    
+    change_string(sentence, strlen(sentence));
+    //fputs(sentence, stdout);
+    fputs(sentence, stdout);
+    
+    free(sentence);
+
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+#include <stdlib.h> - koristite kada se spominje:
+    -dinamicka alokacija
+    -pseudo-slučajni brojevi
+    -abs() funkcija (apsolutna vrijednost)
+
+
+#include <time.h> - koristite kada se spominje:
+    -pseudo-slučajni brojevi
+    
+
+#include <math.h> koristite kada vam trebaju:
+    -matematičke funkcije kao sto su sqrt(a),pow(a,2)
+
+#include <string.h> koristite kada vam treba:
+	-duljina stringa pomoću strlen() funkcije
+
+#include <stdio.h> koristite uvijek.
+*/
